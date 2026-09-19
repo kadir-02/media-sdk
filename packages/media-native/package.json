@@ -1,0 +1,23 @@
+{
+  "name": "media-native",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "_comment_reactNative": "react-native is the real peer for this package but intentionally omitted from package.json so this monorepo installs without a full RN toolchain — see README 'What we cut'. The source has zero react-native imports today (hooks-only, platform-agnostic).",
+  "dependencies": {
+    "media-core": "*"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.0",
+    "typescript": "^5.5.0"
+  }
+}

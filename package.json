@@ -1,0 +1,21 @@
+{
+  "name": "media-sdk-monorepo",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "dev:web": "npm run dev --workspace apps/web",
+    "predev:web": "npm run build --workspace media-core && npm run build --workspace media-react && npm run build --workspace media-ui-react"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  },
+  "dependencies": {
+    "@types/react": "^18.3.31",
+    "react": "^18.3.1"
+  }
+}
