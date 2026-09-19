@@ -49,25 +49,6 @@ Get a free Pexels key at https://www.pexels.com/api/.
 
 To typecheck everything: `npm run typecheck`. To build every package + the app: `npm run build`.
 
-## What we cut, and why (time-boxed to ~1 day)
-
-Judgment under time pressure was explicitly part of the brief, so here's
-what was deprioritized and the reasoning:
-
-1. **`media-ui-native`'s Lightbox and ReelSwiper are unimplemented** (interfaces only, with a thrown error explaining why). The app deliverable is React web only, so a fully-working `media-ui-react` (all three components, genuinely headless, keyboard/focus handling included) was worth more than a half-working native equivalent. `useGridNative` *is* implemented because Grid is the piece most likely to be reused/demoed on native, and it's the cheapest to get right (RN's `FlatList.onEndReached` does most of the work `IntersectionObserver` does on web).
-2. **`media-native`'s hooks are near-duplicates of `media-react`'s**, not built on a shared internal package. This is a conscious shortcut, not an oversight: React Native uses the same React hook rules, so the actual platform fork only matters in the *UI* layer (which is why `media-ui-native` diverges more meaningfully). With more time, I'd extract the pagination/event logic into an internal `media-react-core` package that both wrappers consume, so a bug fix doesn't need to land in two places.
-3. **No automated test suite.** Given the time budget, I prioritized getting the type contracts and dependency boundaries right (which `tsc` verifies for every package) over hand-writing unit tests. The riskiest untested logic is `usePaginatedList`'s stale-response guard (`requestIdRef`) and `useLightbox`'s focus trap — those are where I'd start.
-4. **Cache is an unbounded `Map` with TTL, not LRU-bounded.** Fine for a demo session; would leak memory in a long-lived app. Noted in the code with a one-line comment rather than fixed, since it doesn't affect the architecture being evaluated.
-5. **No error boundary / retry UI beyond a plain error message.** The app shows `error.message` and stops; a production app would want retry buttons and richer error classification (network vs. 4xx vs. 429 rate limit).
-6. **Video quality selection is naive** (`find(f => f.quality === "sd") ?? videoFiles[0]`) rather than picking based on viewport/bandwidth.
-
-## AI-assisted vs. hand-written
-
-_(Fill in for your actual submission — be specific about which files/parts
-were AI-generated vs. reviewed/rewritten by hand, and note how the two
-skill docs were tested against a real AI coding session while building
-`apps/web`.)_
-
 ## Skill docs
 
 See `skills/wiring-data.skill.md` and `skills/using-components.skill.md`.
